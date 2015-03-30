@@ -3,35 +3,28 @@
 use Shell::Command;
 
 sub MAIN ($script, Str :$execute = 'perl6', Bool :$keep-alive = True, Bool :$exit-on-error = False, Bool :$quiet = False) {
-  if $quiet {
+  if !$quiet {
     '[INFO] Starting overseer with options:'.say;
     "[INFO]    --execute: $execute".say;
     "[INFO]    --restart: $execute".say;
     "[INFO]       script: $script".say;
   }
-  my ($promise, $proc);
-  CONTROL {
-    when (Error::Signal::INT) {
-      'caught'.say;
-      .perl.say;
-    }
-    default {
-      'caugh'.say;
-      .perl.say;
-    }
-  }
+  my ($prom, $proc);
+  signal(SIGTERM,SIGINT,SIGHUP,SIGQUIT).tap({
+    ''.say;
+    "[INFO] Killing process with $_".say if !$quiet;
+    await $proc.kill($_);
+    exit 0;
+  });
 
   while Any ~~ $proc || $keep-alive {
-    $promise = start {
-      $proc = run $execute, $script;
-    };
-    $proc.^methods.say;
-
-    await $promise;
-    $proc.perl.say;
-    exit 0 if $proc.exit != 0 && $exit-on-error;
-    ''.say;
-    "[INFO] Restarting $execute $script".say if $quiet;
+    $proc = Proc::Async.new($execute, $script);
+    await ($prom = $proc.start);
+    if $prom.result.exit != 0 && $exit-on-error {
+      "[INFO] Exit code ({$prom.result.exit}) from process caught, exiting".say if !$quiet;
+      exit 0;
+    }
+    "[INFO] Restarting $execute $script".say if !$quiet;
   }
 
 }
