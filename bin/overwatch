@@ -32,7 +32,7 @@ sub MAIN (
     $dir.IO.watch.tap: -> $f {
       my $restart = False;
       for @filters -> $e { 
-        $restart = True, last if $e eq $f.path.substr(*- $e.chars); 
+        $restart = True, last if $f.path.chars > $e.chars &&  $e eq $f.path.substr(*- $e.chars); 
       }
       if @filters.elems == 0 || (@filters.elems > 0 && $restart) {
         try {
@@ -60,7 +60,7 @@ sub MAIN (
   while Any ~~ $proc || $keep-alive {
     $proc = Proc::Async.new($execute, @args);
     $proc.stdout.act(&print);
-    $proc.stderr.act(&warn);
+    $proc.stderr.act(-> $r { $*ERR.print($r); });
     $prom = $proc.start;
     $killer = Promise.new;
     await Promise.anyof($prom, $killer);
@@ -109,6 +109,11 @@ Options:
 {$space x 2}Default: []
 {$space x 2}Directories/files to watch for changes, when a
 {$space x 2}file is changed the <program> is restarted.
+
+{$space}-f \| --filter
+{$space x 2}Default: ''
+{$space x 2}Comma separated list of file extensions to watch
+{$space x 2}for changes.  List applies to all --watch dirs.
 
 Notes:
 {$space}Multiple -w switches may be specified

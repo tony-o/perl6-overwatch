@@ -70,6 +70,16 @@ Default: ```[]```
 
 Directories/files to watch for changes, when a file is changed the <program> is restarted.
 
+###Filter
+
+```
+-f | --filter
+```
+
+Default: ```''```
+
+Comma separated list of file extensions to watch for changes.  List applies to all ```watch``` dirs.
+
 ##Notes
 * Multiple -w switches may be specified
 * To negate a [True|False} value you can use -/q (same as -q=False)
