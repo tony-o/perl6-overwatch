@@ -24,6 +24,7 @@ sub MAIN (
   }
 
   for @watchdir -> $dir {
+    die "Unable to find directory: $dir" if $dir.IO !~~ :e;
     $dir.IO.watch.tap: -> $f {
       $proc.kill(SIGQUIT);
       $killer.keep(True);
