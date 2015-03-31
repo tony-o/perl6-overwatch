@@ -19,6 +19,8 @@ A program/script name is required.
 
 ##Options:
 
+###Executable
+
 ```
 -e=<executable> | --execute=<executable>
 ```
@@ -26,6 +28,8 @@ A program/script name is required.
 Default: ```perl6```
 
 The executable that runs the specified <program>.
+
+###Keep Alive
 
 ```
 -k | --keep-alive
@@ -35,6 +39,9 @@ Default: ```True```
 
 Automatically rerun the program.
  
+
+###Exit on error
+
 ```
 -x | --exit-on-error
 ```
@@ -43,6 +50,8 @@ Default: ```False```
 
 Stop overwatch if the <program> exited with a non-zero code.
 
+###Quiet
+
 ```
 -q | --quiet
 ```
@@ -50,6 +59,8 @@ Stop overwatch if the <program> exited with a non-zero code.
 Default: ```False```
 
 Prevents overwatch from printing informative messages to stdout. 
+
+###Watch
 
 ```
 -w | --watch
