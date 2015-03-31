@@ -3,13 +3,13 @@
 Perl6 Overwatch can be used to restart programs when they crash or 
 when files are modified.  
 
-##Usage: 
+##Usage 
 
 ```
 overwatch [options] <program> [<program arguments>]
 ```
     
-##Required:
+##Required
 
 ```
 <program>
@@ -17,7 +17,7 @@ overwatch [options] <program> [<program arguments>]
     
 A program/script name is required.
 
-##Options:
+##Options
 
 ###Executable
 
@@ -74,13 +74,21 @@ Directories/files to watch for changes, when a file is changed the <program> is 
 * Multiple -w switches may be specified
 * To negate a [True|False} value you can use -/q (same as -q=False)
 
-##Examples:
+##Examples
+
 ```
 overwatch app.pl6
 ```
+
 ```
 overwatch -w=models mvc.pl6
 ```
+
 ```
 overwatch -w=/tmp/ -e=/bin/sh shellscript.sh --shellarg=go
 ```
+
+##License
+
+[Artistic License 2.0](http://www.perlfoundation.org/artistic_license_2_0)
+

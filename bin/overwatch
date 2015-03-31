@@ -8,35 +8,50 @@ sub MAIN (
   Bool :k(:$keep-alive) = True, 
   Bool :x(:$exit-on-error) = False, 
   Bool :q(:$quiet) = False,
+  Str :f(:$filter) = '',
   :w(:@watch) = [],
 ) {
-  my ($prom, $proc, $killer);
+  my ($prom, $proc, $killer, @filters);
 
   USAGE if @args.elems == 0;
   exit 0 if @args.elems == 0;
+
+  @filters = $filter.split(',').map({ .trim });
 
   if !$quiet {
     '[INFO] Starting overseer with options:'.say;
     "[INFO]    --execute: $execute".say;
     "[INFO]    --restart: $execute".say;
-    "[INFO]      --watch: ".say;
-    for @watch -> $dir {
-      say ' ' x 4 ~ $dir;
-    }
+    "[INFO]    --filters: {@filters.join(', ')}".say;
+    "[INFO]      --watch: {@watch.join(', ')}".say;
     "[INFO]       script: {@args.map({ "'$_'" }).join(' ')}".say;
   }
 
   for @watch -> $dir {
     die "Unable to find directory: $dir" if $dir.IO !~~ :e;
     $dir.IO.watch.tap: -> $f {
-      $proc.kill(SIGQUIT);
-      $killer.keep(True);
-      "[INFO] Restart process, file changed: {"$dir/{$f.path}".IO.path}".say;
+      my $restart = False;
+      for @filters -> $e { 
+        $restart = True, last if $e eq $f.path.substr(*- $e.chars); 
+      }
+      if @filters.elems == 0 || (@filters.elems > 0 && $restart) {
+        try {
+          $proc.kill(SIGQUIT);
+          CATCH { 
+            default { 
+              "[ERROR] Killing process: {.message}".say if !$quiet; 
+            } 
+          }
+        }
+        try {
+          $killer.keep(True);
+        }
+        "[INFO] Restart process, file changed: {"$dir/{$f.path}".IO.path}".say if !$quiet;
+      }
     }
   }
 
   signal(SIGTERM,SIGINT,SIGHUP,SIGQUIT).tap({
-    ''.say;
     "[INFO] Killing process with $_".say if !$quiet;
     await $proc.kill($_);
     exit 0;
@@ -44,13 +59,13 @@ sub MAIN (
 
   while Any ~~ $proc || $keep-alive {
     $proc = Proc::Async.new($execute, @args);
-    $proc.stdout.act(&say);
+    $proc.stdout.act(&print);
     $proc.stderr.act(&warn);
     $prom = $proc.start;
     $killer = Promise.new;
     await Promise.anyof($prom, $killer);
     $killer.break if $killer.status !~~ Kept;
-    if $killer.status !~~ Kept && $prom.result.exit != 0 && $exit-on-error {
+    if $killer.status !~~ Kept && $prom.result:exists && $prom.result.exit != 0 && $exit-on-error {
       "[INFO] Exit code ({$prom.result.exit}) from process caught, exiting".say if !$quiet;
       exit 0;
     }
