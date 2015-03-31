@@ -22,31 +22,41 @@ A program/script name is required.
 ```
 -e=<executable> | --execute=<executable>
 ```
+
 Default: ```perl6```
+
 The executable that runs the specified <program>.
 
 ```
 -k | --keep-alive
 ```
+
 Default: ```True```
+
 Automatically rerun the program.
  
 ```
 -x | --exit-on-error
 ```
+
 Default: ```False```
+
 Stop overwatch if the <program> exited with a non-zero code.
 
 ```
 -q | --quiet
 ```
+
 Default: ```False```
+
 Prevents overwatch from printing informative messages to stdout. 
 
 ```
 -w | --watch
 ```
+
 Default: ```[]```
+
 Directories/files to watch for changes, when a file is changed the <program> is restarted.
 
 ##Notes
