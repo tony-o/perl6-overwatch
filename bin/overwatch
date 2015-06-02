@@ -65,7 +65,8 @@ sub MAIN (
         qx<git remote update>; 
         my $local  = qx<git rev-parse @{0}>.chomp; 
         my $remote = qx<git rev-parse @{u}>.chomp; 
-        if $local ne $remote {
+        my $base   = qx<git merge-base @{0} @{u}>.chomp;
+        if $local ne $remote && $local eq $base {
           '[INFO] Pulling from remote repository'.say;
           qx<git pull>;
         }
