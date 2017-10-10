@@ -92,9 +92,9 @@ Default: ```''```
 
 Comma separated list of file extensions to watch for changes.  List applies to all ```watch``` dirs.
 
-## Notes
+#### Notes
 * Multiple -w switches may be specified
-* To negate a [True|False} value you can use -/q (same as -q=False)
+* To negate a [True|False] value you can use -/q (same as -q=False)
 
 ### Process Args
 
