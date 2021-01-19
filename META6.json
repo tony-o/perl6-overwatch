@@ -3,7 +3,7 @@
   "version"     : "0.1.6",
   "perl"        : "6.*",
   "description" : "Utility to help keep a processes running and restart them if they stop.",
-  "auth"        : "github:tony-o",
+  "auth"        : "zef:tony-o",
   "authors"     : [ "Tony O'Dell" ],
   "depends"     : ["Shell::Command"],
   "provides"    : {
