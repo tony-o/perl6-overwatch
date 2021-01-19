@@ -1,6 +1,6 @@
 {
   "name"        : "Overwatch",
-  "version"     : "0.1.6",
+  "version"     : "0.1.7",
   "perl"        : "6.*",
   "description" : "Utility to help keep a processes running and restart them if they stop.",
   "auth"        : "zef:tony-o",
