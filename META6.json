@@ -1,6 +1,6 @@
 {
   "name"        : "Overwatch",
-  "version"     : "0.1.7",
+  "version"     : "0.1.8",
   "perl"        : "6.*",
   "description" : "Utility to help keep a processes running and restart them if they stop.",
   "auth"        : "zef:tony-o",
@@ -9,5 +9,5 @@
   "provides"    : {
     "overwatch": "lib/overwatch.pm6"
   },
-  "source-url"  : "git://github.com/tony-o/perl6-overwatch.git"
+  "source-url"  : "git@github.com:tony-o/perl6-overwatch.git"
 } 

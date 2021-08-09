@@ -1,6 +1,6 @@
 # Overwatch
 
-Perl6 Overwatch can be used to restart programs when they crash or 
+Raku Overwatch can be used to restart programs when they crash or 
 when files are modified.  
 
 ## Usage 
@@ -25,7 +25,7 @@ A program/script name is required.
 -e=<executable> | --execute=<executable>
 ```
 
-Default: ```perl6```
+Default: ```raku```
 
 The executable that runs the specified <program>.
 
@@ -104,7 +104,7 @@ Comma separated list of file extensions to watch for changes.  List applies to a
 
 Default: ```[]```
 
-List of arguments to start the executable with.  Example `overwatch -p='-e' 'sleep 5'` would monitor the process: `perl6 -e 'sleep 5'`
+List of arguments to start the executable with.  Example `overwatch -p='-e' 'sleep 5'` would monitor the process: `raku -e 'sleep 5'`
 
 ## Examples
 

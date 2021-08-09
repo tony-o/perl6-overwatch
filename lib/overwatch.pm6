@@ -1,7 +1,7 @@
 use Shell::Command;
 
 class overwatch {
-  has Str      $.execute       = 'perl6';
+  has Str      $.execute       = 'raku';
   has Bool     $.keep-alive    = True;
   has Bool     $.exit-on-error = False,
   has Str      $.filter        = '';

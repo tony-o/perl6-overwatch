@@ -1,9 +1,9 @@
-#!/usr/bin/env perl6
+#!/usr/bin/env raku
 
 use overwatch;
 
 sub MAIN (
-  Str :e(:$execute) = 'perl6', 
+  Str :e(:$execute) = 'raku',
   Bool :k(:$keep-alive) = True, 
   Bool :x(:$exit-on-error) = False, 
   Int  :g(:$git) = -1,
@@ -28,7 +28,7 @@ sub MAIN (
     :$quiet,
     :$filter,
     :$sleep,
-    :$watch,
+    watch => [|$watch],
   );
 
   if !$quiet {
@@ -69,12 +69,12 @@ sub MAIN (
     });
   }
 
-  $overwatch.go([$pargs, |@args]);
+  $overwatch.go([|$pargs, |@args]);
 }
 
 sub USAGE {
   my $space = ' ' x 4;
-  say qq|Perl6 Overwatch can be used to restart programs when they crash or 
+  say qq|Raku Overwatch can be used to restart programs when they crash or 
 when files are modified.  
 
 Usage: 
@@ -86,7 +86,7 @@ Required:
 
 Options:
 {$space}-e=<executable> \| --execute=<executable>
-{$space x 2}Default: 'perl6'
+{$space x 2}Default: 'raku'
 {$space x 2}The executable that runs the specified <program>.
 
 {$space}-k \| --keep-alive
@@ -123,7 +123,7 @@ Options:
 {$space x 2}Default: []
 {$space x 2}List of arguments to start "-e" with.
 {$space x 2}IE: overwatch -p="-e" "sleep 5"
-{$space x 2}Would monitor the process: perl6 -e "sleep 5"
+{$space x 2}Would monitor the process: raku -e "sleep 5"
 
 Notes:
 {$space}Multiple -w switches may be specified
